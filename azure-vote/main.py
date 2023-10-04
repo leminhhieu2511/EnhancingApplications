@@ -13,6 +13,7 @@ from opencensus.stats import measure as measure_module
 from opencensus.stats import stats as stats_module
 from opencensus.stats import view as view_module
 from opencensus.tags import tag_map as tag_map_module
+from opencensus.trace import config_integration
 from opencensus.ext.azure.trace_exporter import AzureExporter
 from opencensus.trace.samplers import ProbabilitySampler
 from opencensus.trace.tracer import Tracer
@@ -20,6 +21,10 @@ from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 
 # App Insights
 # TODO: Import required libraries for App Insights
+stats = stats_module.stats
+view_manager = stats.view_manager
+config_integration.trace_integrations(['logging'])
+config_integration.trace_integrations(['requests'])
 
 # Logging
 logger = logging.getLogger(__name__)
@@ -27,10 +32,11 @@ logger.addHandler(AzureLogHandler(connection_string='InstrumentationKey=622e15b7
 logger.addHandler(AzureEventHandler(connection_string='InstrumentationKey=622e15b7-bd91-4fd6-a5ab-3bac414f94ec'))
 
 # Metrics
+
 exporter = metrics_exporter.new_metrics_exporter(
   enable_standard_metrics=True,
   connection_string='InstrumentationKey=622e15b7-bd91-4fd6-a5ab-3bac414f94ec')
-
+view_manager.register_exporter(exporter)
 
 # Tracing
 tracer = Tracer(
