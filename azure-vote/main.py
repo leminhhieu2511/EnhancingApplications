@@ -28,7 +28,10 @@ config_integration.trace_integrations(['requests'])
 
 # Logging
 logger = logging.getLogger(__name__)
-logger.addHandler(AzureLogHandler(connection_string='InstrumentationKey=622e15b7-bd91-4fd6-a5ab-3bac414f94ec'))
+handler = AzureLogHandler(connection_string='InstrumentationKey=622e15b7-bd91-4fd6-a5ab-3bac414f94ec')
+handler.setFormatter(logging.Formatter('%(traceId)s %(spanId)s %(message)s'))
+logger.addHandler(handler)
+
 logger.addHandler(AzureEventHandler(connection_string='InstrumentationKey=622e15b7-bd91-4fd6-a5ab-3bac414f94ec'))
 
 # Metrics
@@ -90,11 +93,11 @@ def index():
 
         # Get current values
         vote1 = r.get(button1).decode('utf-8')
-        with tracer.span(name="Cats Vote") as span:
-            print("Cats Vote")
+        with tracer.span(name="Cats-Vote") as span:
+            print("Cats-Vote")
         vote2 = r.get(button2).decode('utf-8')
-        with tracer.span(name="Dogs Vote") as span:
-            print("Dogs Vote")
+        with tracer.span(name="Dogs-Vote") as span:
+            print("Dogs-Vote")
 
 
         # Return index with values
