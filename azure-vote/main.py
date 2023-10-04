@@ -6,7 +6,8 @@ import socket
 import sys
 import logging
 from datetime import datetime
-from opencensus.ext.azure.log_exporter import AzureLogHandler, AzureEventHandler
+from opencensus.ext.azure.log_exporter import AzureLogHandler
+from opencensus.ext.azure.log_exporter import AzureEventHandler
 from opencensus.ext.azure import metrics_exporter
 from opencensus.stats import aggregation as aggregation_module
 from opencensus.stats import measure as measure_module
@@ -20,7 +21,6 @@ from opencensus.trace.tracer import Tracer
 from opencensus.ext.flask.flask_middleware import FlaskMiddleware
 
 # App Insights
-# TODO: Import required libraries for App Insights
 stats = stats_module.stats
 view_manager = stats.view_manager
 config_integration.trace_integrations(['logging'])
@@ -34,8 +34,9 @@ logger.addHandler(handler)
 
 logger.addHandler(AzureEventHandler(connection_string='InstrumentationKey=622e15b7-bd91-4fd6-a5ab-3bac414f94ec'))
 
-# Metrics
+logger.setLevel(logging.INFO)
 
+# Metrics
 exporter = metrics_exporter.new_metrics_exporter(
   enable_standard_metrics=True,
   connection_string='InstrumentationKey=622e15b7-bd91-4fd6-a5ab-3bac414f94ec')
@@ -88,16 +89,14 @@ if not r.get(button2): r.set(button2,0)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-
     if request.method == 'GET':
-
         # Get current values
         vote1 = r.get(button1).decode('utf-8')
-        with tracer.span(name="Cats-Vote") as span:
-            print("Cats-Vote")
+        with tracer.span(name="Cats Vote") as span:
+            print("Cats Vote")
         vote2 = r.get(button2).decode('utf-8')
-        with tracer.span(name="Dogs-Vote") as span:
-            print("Dogs-Vote")
+        with tracer.span(name="Dogs Vote") as span:
+            print("Dogs Vote")
 
 
         # Return index with values
