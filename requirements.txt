@@ -1,7 +1,7 @@
-Flask==3.0.0
-opencensus-ext-azure==1.1.11
-opencensus-ext-flask==0.8.2
-redis==3.5.3
-opencensus==0.11.3
-opencensus-ext-logging==0.1.1
+Flask
+opencensus-ext-azure
+opencensus-ext-flask
+redis
+opencensus
+opencensus-ext-logging
 appinsights
