@@ -89,7 +89,6 @@ try:
                         password=os.environ['REDIS_PWD'])
    else:
       r = redis.Redis(redis_server)
-   r.ping()
 except redis.ConnectionError:
    exit('Failed to connect to Redis, terminating.')
 
