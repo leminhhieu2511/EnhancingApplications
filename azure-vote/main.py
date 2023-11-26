@@ -79,8 +79,8 @@ else:
     title = app.config['TITLE']
 
 # Redis Connection
-# r = redis.Redis()
-redis_server = os.environ['REDIS']
+redis_server = redis.Redis()
+#redis_server = os.environ['REDIS']
 
 try:
    if "REDIS_PWD" in os.environ:
